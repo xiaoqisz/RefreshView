@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RefreshListView">
+        <!-- the class name of header,must extends BaseRefreshHeader-->
+        <attr name="rlvRefreshHeader" format="string"/>
+    </declare-styleable>
+</resources>
