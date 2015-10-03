@@ -93,6 +93,6 @@ public class DefaultRefreshHeader
     @Override
     public void onRefreshScrolled()
     {
-
+        
     }
 }

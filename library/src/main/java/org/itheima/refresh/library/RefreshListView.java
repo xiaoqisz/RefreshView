@@ -40,7 +40,6 @@ public class RefreshListView
 
     private int     mHiddenSpace    = -1;
     private boolean mInterceptSuper = true;
-    private int     mLastMoveY      = -1;
 
     private OnItemClickListener mOnItemClickListener;
     private Drawable            mItemSelector;
@@ -251,19 +250,7 @@ public class RefreshListView
                 if (diffY > 0 && firstVisiblePosition == 0)
                 {
                     //up to down,is pull down refresh
-
-                    int extra = 0;
-                    if (mLastMoveY != -1)
-                    {
-                        if (mLastMoveY > moveY)
-                        {
-                            Log.d(TAG, "last : " + mLastMoveY + "  current : " + moveY);
-                            // down to up
-                            extra = mLastMoveY - moveY;
-                        }
-                    }
-
-                    int top = diffY - mHiddenSpace - mRefreshHeight - extra;
+                    int top = diffY - mHiddenSpace - mRefreshHeight;
                     mRefreshContainer.setPadding(0, top, 0, 0);
 
                     mHandler.post(new Runnable()
@@ -299,15 +286,12 @@ public class RefreshListView
                     }
                     return true;
                 }
-
-                mLastMoveY = moveY;
                 break;
             case MotionEvent.ACTION_UP:
                 // reset
                 mDownY = -1;
                 mHiddenSpace = -1;
                 mInterceptSuper = true;
-                mLastMoveY = -1;
 
                 Log.d(TAG, "up....");
                 //if state is pull refresh,then pull refresh
