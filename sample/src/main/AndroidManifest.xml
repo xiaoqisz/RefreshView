@@ -32,6 +32,11 @@
             android:name=".listview.RefreshListViewCustom"
             android:label="@string/title_refresh_list_view_custom">
         </activity>
+
+        <activity
+            android:name=".listview.RefreshListViewSticky"
+            android:label="@string/title_refresh_list_view_sticky">
+        </activity>
     </application>
 
 </manifest>

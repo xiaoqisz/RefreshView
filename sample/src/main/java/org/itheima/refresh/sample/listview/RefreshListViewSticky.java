@@ -20,7 +20,7 @@ import org.itheima.refresh.sample.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefreshListViewCustom
+public class RefreshListViewSticky
         extends AppCompatActivity
 {
     private static final int[] PICS = new int[]{R.mipmap.pic_1,
@@ -40,7 +40,7 @@ public class RefreshListViewCustom
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview_custom);
+        setContentView(R.layout.activity_listview_sticky);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,7 +49,6 @@ public class RefreshListViewCustom
         // initView
         mListView = (RefreshListView) findViewById(R.id.refresh_list_view);
         mPager = (ViewPager) view.findViewById(R.id.viewpager);
-
         mListView.addHeaderView(view);
 
         // initData
@@ -64,11 +63,13 @@ public class RefreshListViewCustom
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Toast.makeText(RefreshListViewCustom.this,
+                Toast.makeText(RefreshListViewSticky.this,
                                "click " + (position - mListView.getHeaderViewsCount()),
-                               Toast.LENGTH_SHORT);
+                               Toast.LENGTH_SHORT)
+                     .show();
             }
         });
+
         mListView.setOnRefreshListener(new OnRefreshListener()
         {
             @Override
@@ -100,6 +101,7 @@ public class RefreshListViewCustom
                         });
                     }
                 }).start();
+
             }
         });
     }
@@ -153,7 +155,7 @@ public class RefreshListViewCustom
             ViewHolder holder = null;
             if (convertView == null)
             {
-                convertView = View.inflate(RefreshListViewCustom.this,
+                convertView = View.inflate(RefreshListViewSticky.this,
                                            R.layout.item_listview,
                                            null);
                 holder = new ViewHolder();
@@ -166,6 +168,7 @@ public class RefreshListViewCustom
 
             final String data = mDatas.get(position);
             holder.tvData.setText(data);
+
             return convertView;
         }
     }
@@ -194,7 +197,7 @@ public class RefreshListViewCustom
         @Override
         public Object instantiateItem(ViewGroup container, int position)
         {
-            ImageView iv = new ImageView(RefreshListViewCustom.this);
+            ImageView iv = new ImageView(RefreshListViewSticky.this);
             iv.setImageResource(PICS[position]);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
 

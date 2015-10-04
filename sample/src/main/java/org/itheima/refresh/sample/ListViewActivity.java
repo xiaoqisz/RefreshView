@@ -11,13 +11,15 @@ import android.widget.ListView;
 
 import org.itheima.refresh.sample.listview.RefreshListViewCustom;
 import org.itheima.refresh.sample.listview.RefreshListViewDefault;
+import org.itheima.refresh.sample.listview.RefreshListViewSticky;
 
 public class ListViewActivity
         extends AppCompatActivity
 {
 
     private String[] datas = new String[]{"Default",
-                                          "Custom Header"};
+                                          "Custom",
+                                          "Sticky"};
     private ListView mListView;
 
     @Override
@@ -47,6 +49,9 @@ public class ListViewActivity
                         break;
                     case 1:
                         intent = new Intent(ListViewActivity.this, RefreshListViewCustom.class);
+                        break;
+                    case 2:
+                        intent = new Intent(ListViewActivity.this, RefreshListViewSticky.class);
                         break;
                 }
                 startActivity(intent);

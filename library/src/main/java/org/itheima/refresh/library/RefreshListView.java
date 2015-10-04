@@ -47,6 +47,8 @@ public class RefreshListView
     private Animator mHeaderAnimator;
 
     private Handler mHandler = new Handler();
+    private OnRefreshListener mRefreshListener;
+    private boolean           isSticky;
 
     public RefreshListView(Context context)
     {
@@ -59,7 +61,8 @@ public class RefreshListView
 
         TypedArray ta = context.obtainStyledAttributes(set, R.styleable.RefreshListView);
 
-        mRefreshHeaderClass = ta.getString(R.styleable.RefreshListView_rlvRefreshHeader);
+        mRefreshHeaderClass = ta.getString(R.styleable.RefreshListView_rvRefreshHeader);
+        isSticky = ta.getBoolean(R.styleable.RefreshListView_rvRefreshSticky, false);
 
         ta.recycle();
 
@@ -109,7 +112,18 @@ public class RefreshListView
 
         // hiden refresh part
         mRefreshHeight = mRefreshHeader.getRefreshHeight();
-        mRefreshContainer.setPadding(0, -mRefreshHeight, 0, 0);
+        setRefreshPadding(-mRefreshHeight);
+    }
+
+    private void setRefreshPadding(int paddingTop)
+    {
+        if (isSticky)
+        {
+            mRefreshContainer.setPadding(0, 0, 0, paddingTop);
+        } else
+        {
+            mRefreshContainer.setPadding(0, paddingTop, 0, 0);
+        }
     }
 
     @Override
@@ -187,6 +201,18 @@ public class RefreshListView
         return super.performItemClick(view, position, id);
     }
 
+    public void setOnRefreshListener(OnRefreshListener listener)
+    {
+        this.mRefreshListener = listener;
+    }
+
+    public void setRefreshFinish()
+    {
+        doHeaderAnimator(-mRefreshHeight);
+        mCurrentState = BaseRefreshHeader.STATE_PULL_DOWN;
+        mRefreshHeader.onRefreshStateChanged(mCurrentState);
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev)
     {
@@ -252,10 +278,9 @@ public class RefreshListView
                     //up to down,is pull down refresh
                     final int pullDown = diffY - mHiddenSpace;
                     int top = pullDown - mRefreshHeight;
-                    mRefreshContainer.setPadding(0, top, 0, 0);
+                    setRefreshPadding(top);
 
                     notifyScrolled(pullDown);
-
                     if (top >= 0 && mCurrentState != BaseRefreshHeader.STATE_RELEASE_REFRESH)
                     {
                         // release refresh
@@ -293,15 +318,13 @@ public class RefreshListView
                 {
                     //hide the refresh part
                     int top = -mRefreshHeight;
-                    mHeaderAnimator = doHeaderAnimator(mRefreshContainer.getPaddingTop(), top);
+                    mHeaderAnimator = doHeaderAnimator(top);
 
                 } else if (mCurrentState == BaseRefreshHeader.STATE_RELEASE_REFRESH)
                 {
                     //if state is release refresh,then refreshing
                     int top = 0;
-                    mHeaderAnimator = doHeaderAnimator(mRefreshContainer.getPaddingTop(),
-                                                       top,
-                                                       new HeaderAnimationListener());
+                    mHeaderAnimator = doHeaderAnimator(top, new HeaderAnimationListener());
                 }
                 break;
             default:
@@ -329,13 +352,21 @@ public class RefreshListView
     }
 
 
-    private Animator doHeaderAnimator(int start, int end)
+    private Animator doHeaderAnimator(int end)
     {
-        return doHeaderAnimator(start, end, null);
+        return doHeaderAnimator(end, null);
     }
 
-    private Animator doHeaderAnimator(int start, int end, Animator.AnimatorListener listener)
+    private Animator doHeaderAnimator(int end, Animator.AnimatorListener listener)
     {
+        int start = 0;
+        if (isSticky)
+        {
+            start = mRefreshContainer.getPaddingBottom();
+        } else
+        {
+            start = mRefreshContainer.getPaddingTop();
+        }
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
         long          duration = Math.abs(end - start) * 10;
         if (duration >= getResources().getInteger(android.R.integer.config_mediumAnimTime))
@@ -350,7 +381,8 @@ public class RefreshListView
             public void onAnimationUpdate(ValueAnimator animation)
             {
                 int value = (int) animation.getAnimatedValue();
-                mRefreshContainer.setPadding(0, value, 0, 0);
+                //                mRefreshContainer.setPadding(0, value, 0, 0);
+                setRefreshPadding(value);
 
                 // notify scrolled
                 notifyScrolled(value + mRefreshHeight);
@@ -386,6 +418,12 @@ public class RefreshListView
             //state change
             mCurrentState = BaseRefreshHeader.STATE_REFRESHING;
             mRefreshHeader.onRefreshStateChanged(mCurrentState);
+
+            // callback interface
+            if (mRefreshListener != null)
+            {
+                mRefreshListener.onRefresh();
+            }
         }
 
         @Override

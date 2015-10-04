@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.itheima.refresh.library.OnRefreshListener;
 import org.itheima.refresh.library.RefreshListView;
 import org.itheima.refresh.sample.R;
 
@@ -29,8 +30,11 @@ public class RefreshListViewDefault
 
     private RefreshListView mListView;
 
-    private List<String> mDatas;
-    private ViewPager    mPager;
+    private List<String>   mDatas;
+    private ViewPager      mPager;
+    private RefreshAdapter mAdapter;
+
+    private int mTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,19 +49,14 @@ public class RefreshListViewDefault
         // initView
         mListView = (RefreshListView) findViewById(R.id.refresh_list_view);
         mPager = (ViewPager) view.findViewById(R.id.viewpager);
-        mDatas = new ArrayList<>();
-        for (int i = 0; i < 50; i++)
-        {
-            mDatas.add("数据" + i);
-        }
-
-
         mListView.addHeaderView(view);
 
         // initData
-        mListView.setAdapter(new RefreshAdapter());
-
+        mAdapter = new RefreshAdapter();
+        mListView.setAdapter(mAdapter);
         mPager.setAdapter(new PicAdapter());
+
+        loadDatas();
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -65,11 +64,59 @@ public class RefreshListViewDefault
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 Toast.makeText(RefreshListViewDefault.this,
-                               "click " + position,
+                               "click " + (position - mListView.getHeaderViewsCount()),
                                Toast.LENGTH_SHORT)
                      .show();
             }
         });
+
+        mListView.setOnRefreshListener(new OnRefreshListener()
+        {
+            @Override
+            public void onRefresh()
+            {
+                new Thread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+
+                        runOnUiThread(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                loadDatas();
+
+                                mListView.setRefreshFinish();
+                            }
+                        });
+                    }
+                }).start();
+
+            }
+        });
+    }
+
+    private void loadDatas()
+    {
+        mDatas = new ArrayList<>();
+        for (int i = 0; i < 50; i++)
+        {
+            mDatas.add("第" + mTime + "次-数据" + i);
+        }
+
+        mAdapter.notifyDataSetChanged();
+
+        mTime++;
     }
 
     private class RefreshAdapter
@@ -121,18 +168,6 @@ public class RefreshListViewDefault
 
             final String data = mDatas.get(position);
             holder.tvData.setText(data);
-
-            holder.tvData.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Toast.makeText(RefreshListViewDefault.this,
-                                   "click item " + data,
-                                   Toast.LENGTH_SHORT)
-                         .show();
-                }
-            });
 
             return convertView;
         }

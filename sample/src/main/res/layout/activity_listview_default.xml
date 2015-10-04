@@ -8,20 +8,23 @@
     android:fitsSystemWindows="true"
     tools:context="org.itheima.refresh.sample.listview.RefreshListViewDefault">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
+    <include layout="@layout/appbar"/>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+        <org.itheima.refresh.library.RefreshListView
+            android:id="@+id/refresh_list_view"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:layout_height="match_parent"
+            />
 
-    </android.support.design.widget.AppBarLayout>
+    </RelativeLayout>
 
-    <include layout="@layout/content_listview_default"/>
 
 </android.support.design.widget.CoordinatorLayout>

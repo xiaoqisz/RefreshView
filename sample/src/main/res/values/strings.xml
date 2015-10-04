@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">sample</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Refresh View</string>
+    <string name="action_about">About</string>
 
     <!-- title -->
     <string name="title_refresh_list_view_default">ListView/Default</string>
     <string name="title_refresh_list_view_custom">ListView/Custom</string>
+    <string name="title_refresh_list_view_sticky">ListView/Sticky</string>
 
 </resources>

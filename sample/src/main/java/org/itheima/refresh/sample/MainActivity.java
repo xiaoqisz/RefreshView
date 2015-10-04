@@ -11,9 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.itheima.refresh.sample.listview.RefreshListViewCustom;
-import org.itheima.refresh.sample.listview.RefreshListViewDefault;
-
 public class MainActivity
         extends AppCompatActivity
 {
@@ -69,8 +66,7 @@ public class MainActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_abount)
         {
             return true;
         }
