@@ -16,7 +16,10 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".ListViewActivity"
+            android:label="ListView">
         </activity>
 
         <!-- ListView -->
@@ -27,7 +30,7 @@
 
         <activity
             android:name=".listview.RefreshListViewCustom"
-            android:label="@string/title_refresh_list_view_default">
+            android:label="@string/title_refresh_list_view_custom">
         </activity>
     </application>
 
