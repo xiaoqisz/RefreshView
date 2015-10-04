@@ -7,22 +7,27 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".RefreshListViewActivity"
-            android:label="@string/title_activity_refresh_list_view"
-            android:theme="@style/AppTheme.NoActionBar">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+        </activity>
+
+        <!-- ListView -->
+        <activity
+            android:name=".listview.RefreshListViewDefault"
+            android:label="@string/title_refresh_list_view_default">
+        </activity>
+
+        <activity
+            android:name=".listview.RefreshListViewCustom"
+            android:label="@string/title_refresh_list_view_default">
         </activity>
     </application>
 

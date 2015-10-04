@@ -1,6 +1,7 @@
 package org.itheima.refresh.library;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 public class DefaultRefreshHeader
         extends BaseRefreshHeader
 {
+    private static final String TAG = "DefaultRefreshHeader";
     private TextView    mTvState;
     private ProgressBar mPbLoading;
     private ImageView   mIvArrow;
@@ -90,9 +92,4 @@ public class DefaultRefreshHeader
         }
     }
 
-    @Override
-    public void onRefreshScrolled()
-    {
-        
-    }
 }

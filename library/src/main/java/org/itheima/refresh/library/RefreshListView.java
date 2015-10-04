@@ -100,6 +100,7 @@ public class RefreshListView
         }
 
         mRefreshContainer = new LinearLayout(getContext());
+        mRefreshContainer.setBackgroundColor(Color.WHITE);
         mRefreshContainer.setOrientation(LinearLayout.VERTICAL);
         mRefreshContainer.addView(mRefreshHeader.getRefreshView());
 
@@ -107,8 +108,7 @@ public class RefreshListView
         addHeaderView(mRefreshContainer);
 
         // hiden refresh part
-        mRefreshContainer.measure(0, 0);
-        mRefreshHeight = mRefreshContainer.getMeasuredHeight();
+        mRefreshHeight = mRefreshHeader.getRefreshHeight();
         mRefreshContainer.setPadding(0, -mRefreshHeight, 0, 0);
     }
 
@@ -250,17 +250,11 @@ public class RefreshListView
                 if (diffY > 0 && firstVisiblePosition == 0)
                 {
                     //up to down,is pull down refresh
-                    int top = diffY - mHiddenSpace - mRefreshHeight;
+                    final int pullDown = diffY - mHiddenSpace;
+                    int top = pullDown - mRefreshHeight;
                     mRefreshContainer.setPadding(0, top, 0, 0);
 
-                    mHandler.post(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            mRefreshHeader.onRefreshScrolled();
-                        }
-                    });
+                    notifyScrolled(pullDown);
 
                     if (top >= 0 && mCurrentState != BaseRefreshHeader.STATE_RELEASE_REFRESH)
                     {
@@ -322,6 +316,18 @@ public class RefreshListView
         return flag;
     }
 
+    private void notifyScrolled(final int pullDown)
+    {
+        mHandler.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mRefreshHeader.onRefreshScrolled(pullDown, mRefreshHeader.getRefreshHeight());
+            }
+        });
+    }
+
 
     private Animator doHeaderAnimator(int start, int end)
     {
@@ -345,6 +351,9 @@ public class RefreshListView
             {
                 int value = (int) animation.getAnimatedValue();
                 mRefreshContainer.setPadding(0, value, 0, 0);
+
+                // notify scrolled
+                notifyScrolled(value + mRefreshHeight);
             }
         });
         animator.setInterpolator(new AccelerateInterpolator(1.5f));

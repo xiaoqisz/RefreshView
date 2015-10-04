@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.itheima.refresh.sample.RefreshListViewActivity">
+    tools:context="org.itheima.refresh.sample.listview.RefreshListViewDefault">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -22,6 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_refresh_list_view"/>
+    <include layout="@layout/content_listview_default"/>
 
 </android.support.design.widget.CoordinatorLayout>

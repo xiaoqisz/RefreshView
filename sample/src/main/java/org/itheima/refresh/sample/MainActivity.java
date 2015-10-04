@@ -1,17 +1,25 @@
 package org.itheima.refresh.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.itheima.refresh.sample.listview.RefreshListViewCustom;
+import org.itheima.refresh.sample.listview.RefreshListViewDefault;
 
 public class MainActivity
         extends AppCompatActivity
 {
+
+    private String[] datas = new String[]{"ListView"};
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,18 +29,29 @@ public class MainActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+
+        mListView = (ListView) findViewById(R.id.main_listview);
+        mListView.setAdapter(new ArrayAdapter<String>(this,
+                                                      android.R.layout.simple_list_item_1,
+                                                      datas));
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
-            public void onClick(View view)
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .show();
+                Intent intent = null;
+                switch (position)
+                {
+                    case 0:
+                        intent = new Intent(MainActivity.this, RefreshListViewCustom.class);
+                        break;
+                }
+                startActivity(intent);
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

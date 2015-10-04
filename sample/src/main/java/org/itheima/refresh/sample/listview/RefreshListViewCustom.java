@@ -1,4 +1,4 @@
-package org.itheima.refresh.sample;
+package org.itheima.refresh.sample.listview;
 
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -14,11 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.itheima.refresh.library.RefreshListView;
+import org.itheima.refresh.sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefreshListViewActivity
+public class RefreshListViewCustom
         extends AppCompatActivity
 {
     private static final int[] PICS = new int[]{R.mipmap.pic_1,
@@ -35,7 +36,7 @@ public class RefreshListViewActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_refresh_list_view);
+        setContentView(R.layout.activity_listview_custom);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -63,7 +64,7 @@ public class RefreshListViewActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                Toast.makeText(RefreshListViewActivity.this,
+                Toast.makeText(RefreshListViewCustom.this,
                                "click " + position,
                                Toast.LENGTH_SHORT)
                      .show();
@@ -107,8 +108,8 @@ public class RefreshListViewActivity
             ViewHolder holder = null;
             if (convertView == null)
             {
-                convertView = View.inflate(RefreshListViewActivity.this,
-                                           R.layout.item_refresh_list_view,
+                convertView = View.inflate(RefreshListViewCustom.this,
+                                           R.layout.item_listview,
                                            null);
                 holder = new ViewHolder();
                 convertView.setTag(holder);
@@ -126,7 +127,7 @@ public class RefreshListViewActivity
                 @Override
                 public void onClick(View v)
                 {
-                    Toast.makeText(RefreshListViewActivity.this,
+                    Toast.makeText(RefreshListViewCustom.this,
                                    "click item " + data,
                                    Toast.LENGTH_SHORT)
                          .show();
@@ -161,7 +162,7 @@ public class RefreshListViewActivity
         @Override
         public Object instantiateItem(ViewGroup container, int position)
         {
-            ImageView iv = new ImageView(RefreshListViewActivity.this);
+            ImageView iv = new ImageView(RefreshListViewCustom.this);
             iv.setImageResource(PICS[position]);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
 

@@ -11,6 +11,7 @@ public abstract class BaseRefreshHeader
     public final static int STATE_REFRESHING      = 2;
 
     private View mRefreshView;
+    private int  mRefreshHeight;
 
     public BaseRefreshHeader(Context context)
     {
@@ -33,7 +34,8 @@ public abstract class BaseRefreshHeader
 
     }
 
-    public void onRefreshScrolled()
+
+    protected void onRefreshScrolled(int pullDown, int refreshHeight)
     {
 
     }
@@ -44,6 +46,19 @@ public abstract class BaseRefreshHeader
     public View getRefreshView()
     {
         return mRefreshView;
+    }
+
+    /**
+     * @return refresh part height
+     */
+    public int getRefreshHeight()
+    {
+        if (mRefreshHeight == 0)
+        {
+            mRefreshView.measure(0, 0);
+            mRefreshHeight = mRefreshView.getMeasuredHeight();
+        }
+        return mRefreshHeight;
     }
 
 
